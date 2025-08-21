@@ -13,7 +13,7 @@ impl DeepSeekAdapter {
         }
     }
 
-    pub async fn get_replica(self, user_replicas: Vec<String>) -> Result<String, Box<dyn Error>> {
+    pub async fn get_replica(&self, user_replicas: Vec<String>) -> Result<String, Box<dyn Error>> {
         let prompt = user_replicas.join("\n");
         let prompt = prompt.as_str();
         let raw_response = self.client.get_completion(prompt).await.unwrap();

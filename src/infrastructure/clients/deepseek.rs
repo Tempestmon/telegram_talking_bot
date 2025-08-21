@@ -27,7 +27,7 @@ impl DeepSeekClient {
         }
     }
 
-    pub fn new() -> DeepSeekClient {
+    pub fn new() -> Self {
         Self::new_with_params(
             &env::var("DS_TOKEN").expect("DS_TOKEN is not present"),
             &env::var("DS_SYSTEM_PROMPT").expect("DS_SYSTEM_PROMPT is not present"),
@@ -37,7 +37,7 @@ impl DeepSeekClient {
         )
     }
 
-    pub async fn get_completion(self, prompt: &str) -> Result<Value, Box<dyn Error>> {
+    pub async fn get_completion(&self, prompt: &str) -> Result<Value, Box<dyn Error>> {
         let body = json!(
             {
                 "messages": [
@@ -55,8 +55,8 @@ impl DeepSeekClient {
         );
         let response = self
             .client
-            .post(self.url)
-            .bearer_auth(self.token)
+            .post(self.url.clone())
+            .bearer_auth(self.token.clone())
             .json(&body)
             .send()
             .await?;
