@@ -1,12 +1,17 @@
 use crate::infrastructure::adapters::deepseek::DeepSeekAdapter;
 
-struct ReplyUseCase {
+pub struct ReplyUseCase {
     deepseek_adapter: DeepSeekAdapter,
 }
 
 impl ReplyUseCase {
-    pub async fn execute(self, message: String) -> String {}
-}
+    pub fn new() -> ReplyUseCase {
+        ReplyUseCase {
+            deepseek_adapter: DeepSeekAdapter::new(),
+        }
+    }
 
-#[warn(dead_code)]
-struct StartConversationUseCase {}
+    pub async fn execute(&self, message: String) -> String {
+        message
+    }
+}
