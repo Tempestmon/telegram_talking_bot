@@ -4,8 +4,8 @@ use chrono::{DateTime, Utc};
 pub struct Message {
     pub username: String,
     pub text: String,
-    chat_id: String,
-    time: DateTime<Utc>,
+    pub chat_id: String,
+    pub time: DateTime<Utc>,
 }
 
 impl Message {

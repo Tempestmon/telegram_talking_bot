@@ -9,6 +9,7 @@ use teloxide::{
     types::{Message, Update},
     Bot,
 };
+use tracing::info;
 
 use domain::use_case::ReplyUseCase;
 use std::sync::Arc;
@@ -18,6 +19,9 @@ use crate::infrastructure::repositories::basic_repository::BasicRepository;
 
 #[tokio::main]
 async fn main() {
+    tracing_subscriber::fmt().init();
+
+    info!("Starting Telegram bot");
     let basic_repository = BasicRepository::new();
     let reply_use_case = Arc::new(Mutex::new(ReplyUseCase::new(basic_repository)));
 
@@ -33,4 +37,6 @@ async fn main() {
         .build()
         .dispatch()
         .await;
+
+    info!("Bot stopped");
 }

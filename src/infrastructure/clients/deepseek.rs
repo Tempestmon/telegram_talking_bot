@@ -1,6 +1,7 @@
 use env;
 use serde_json::{json, Value};
 use std::error::Error;
+use tracing::info;
 
 pub struct DeepSeekClient {
     token: String,
@@ -38,6 +39,7 @@ impl DeepSeekClient {
     }
 
     pub async fn get_completion(&self, prompt: &str) -> Result<Value, Box<dyn Error>> {
+        info!("Make request to DeepSeek");
         let body = json!(
             {
                 "messages": [
@@ -62,6 +64,7 @@ impl DeepSeekClient {
             .await?;
 
         let json_response: Value = response.json().await?;
+        info!("Succesfully made request to DeepSeek");
         Ok(json_response)
     }
 }

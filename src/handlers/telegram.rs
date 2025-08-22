@@ -2,6 +2,7 @@ use std::sync::Arc;
 use tokio::sync::Mutex;
 
 use teloxide::{prelude::Requester, types::Message, Bot};
+use tracing::info;
 
 use crate::{
     domain::{self, use_case::ReplyUseCase},
@@ -20,6 +21,7 @@ pub async fn handle_message<R: Repository>(
     let time = message.date;
     match text {
         Some(text) => {
+            info!("Receive message {text} from username {username} in chat {chat_id}");
             let use_case_message =
                 domain::models::Message::new(username, &text.to_string(), &chat_id, time);
 

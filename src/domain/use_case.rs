@@ -1,3 +1,5 @@
+use tracing::info;
+
 use crate::{
     domain::models::Message,
     infrastructure::{adapters::deepseek::DeepSeekAdapter, repositories::repository::Repository},
@@ -28,7 +30,10 @@ impl<R: Repository> ReplyUseCase<R> {
             let text = &replica.text;
             ds_text.push(format!("{username}: {text}"));
         }
-        if previous_replicas.len() >= 3 {
+        let replicas_length = previous_replicas.len();
+        info!("Got {replicas_length} replicas");
+        info!("{previous_replicas:#?}");
+        if replicas_length >= 5 {
             return Some(
                 self.deepseek_adapter
                     .get_replica(ds_text)

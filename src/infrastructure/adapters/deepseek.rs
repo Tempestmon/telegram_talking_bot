@@ -22,7 +22,7 @@ impl DeepSeekAdapter {
             .ok_or("Missing choices field")?
             .as_array()
             .ok_or("Choices is not an array")?;
-        let first_choice = choices.get(0).ok_or("Choices array is empty")?;
+        let first_choice = choices.first().ok_or("Choices array is empty")?;
         let content = first_choice
             .get("message")
             .ok_or("Choices array does not have message field")?
