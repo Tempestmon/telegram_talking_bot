@@ -1,8 +1,8 @@
-use crate::infrastructure::repositories::repository::Repository;
+use crate::{domain::models::Message, infrastructure::repositories::repository::Repository};
 use std::collections::VecDeque;
 
 pub struct BasicRepository {
-    replicas: VecDeque<String>,
+    replicas: VecDeque<Message>,
 }
 
 impl BasicRepository {
@@ -14,12 +14,12 @@ impl BasicRepository {
 }
 
 impl Repository for BasicRepository {
-    fn save_replica(&mut self, replica: String) -> Result<(), Box<dyn std::error::Error>> {
+    fn save_replica(&mut self, replica: Message) -> Result<(), Box<dyn std::error::Error>> {
         self.replicas.push_front(replica);
         Ok(())
     }
 
-    fn get_replicas(&self, count: usize) -> Vec<String> {
+    fn get_replicas(&self, count: usize) -> Vec<Message> {
         self.replicas.iter().rev().take(count).cloned().collect()
     }
 }
