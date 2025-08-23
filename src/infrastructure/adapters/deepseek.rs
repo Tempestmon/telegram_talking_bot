@@ -28,6 +28,8 @@ impl DeepSeekAdapter {
             .ok_or("Choices array does not have message field")?
             .get("content")
             .ok_or("Message does not have content")?
+            .as_str()
+            .ok_or("Content is not a string")?
             .to_string();
         Ok(content)
     }

@@ -17,20 +17,16 @@ pub async fn handle_message<R: Repository>(
     let chat_id = message.chat.id.to_string();
     let from = message.from.as_ref().unwrap();
     let username = from.username.as_ref().unwrap();
-    let mentioned_users = message.mentioned_users();
     let mut is_bot_mentioned = false;
-    let bot_name = bot.get_my_name().await.unwrap().name;
-    for user in mentioned_users {
-        let mentioned_username = user.username.clone().unwrap();
-        if mentioned_username == bot_name {
-            is_bot_mentioned = true;
-        }
-    }
+    let bot_name = &bot.get_me().await.unwrap().username.clone().unwrap();
     let text = message.text();
     let time = message.date;
     match text {
         Some(text) => {
             info!("Receive message {text} from username {username} in chat {chat_id}");
+            if text.contains(bot_name) {
+                is_bot_mentioned = true;
+            }
             let use_case_message = domain::models::Message::new(
                 username,
                 &text.to_string(),

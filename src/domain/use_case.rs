@@ -1,3 +1,4 @@
+use std::sync::Arc;
 use tracing::{debug, info};
 
 use crate::{
@@ -6,14 +7,14 @@ use crate::{
 };
 
 pub struct ReplyUseCase<R: Repository> {
-    deepseek_adapter: DeepSeekAdapter,
+    deepseek_adapter: Arc<DeepSeekAdapter>,
     repository: R,
 }
 
 impl<R: Repository> ReplyUseCase<R> {
     pub fn new(repository: R) -> Self {
         ReplyUseCase {
-            deepseek_adapter: DeepSeekAdapter::new(),
+            deepseek_adapter: Arc::new(DeepSeekAdapter::new()),
             repository,
         }
     }
