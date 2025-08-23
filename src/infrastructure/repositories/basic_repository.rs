@@ -29,4 +29,10 @@ impl Repository for BasicRepository {
     async fn get_replicas(&self, count: usize) -> Vec<Message> {
         self.replicas.iter().rev().take(count).cloned().collect()
     }
+
+    async fn flush_chat(&mut self, chat_id: String) -> Result<(), Box<dyn std::error::Error>> {
+        self.replicas.retain(|m| m.chat_id != chat_id);
+        let replicas = &self.replicas;
+        Ok(())
+    }
 }
