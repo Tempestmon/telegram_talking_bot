@@ -13,7 +13,6 @@ use tracing::info;
 
 use domain::use_case::ReplyUseCase;
 use std::sync::Arc;
-use tokio::sync::Mutex;
 
 use crate::infrastructure::{
     adapters::deepseek::DeepSeekAdapter, repositories::basic_repository::BasicRepository,

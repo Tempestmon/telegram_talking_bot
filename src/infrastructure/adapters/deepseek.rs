@@ -1,5 +1,7 @@
 use std::error::Error;
 
+use tracing::info;
+
 use crate::infrastructure::clients::deepseek::DeepSeekClient;
 
 pub struct DeepSeekAdapter {
@@ -8,6 +10,7 @@ pub struct DeepSeekAdapter {
 
 impl DeepSeekAdapter {
     pub fn new() -> DeepSeekAdapter {
+        info!("Create DeepSeekAdapter");
         DeepSeekAdapter {
             client: DeepSeekClient::new(),
         }

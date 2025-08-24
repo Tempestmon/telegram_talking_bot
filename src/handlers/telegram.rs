@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use teloxide::{prelude::Requester, types::Message, Bot};
-use tracing::info;
+use tracing::{info, warn};
 
 use crate::{
     domain::{self, use_case::ReplyUseCase},
@@ -13,6 +13,7 @@ pub async fn handle_message<R: Repository>(
     message: Message,
     use_case: Arc<ReplyUseCase<R>>,
 ) -> Result<(), teloxide::errors::RequestError> {
+    info!("Got message to handle");
     let chat_id = message.chat.id.to_string();
     let from = message.from.as_ref().unwrap();
     let username = from.username.as_ref().unwrap();
@@ -33,7 +34,7 @@ pub async fn handle_message<R: Repository>(
                 bot.send_message(chat_id, response).await?;
             }
         }
-        None => return Ok(()),
+        None => warn!("Message does not contains text"),
     }
 
     Ok(())

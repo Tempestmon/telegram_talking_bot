@@ -12,6 +12,7 @@ pub struct BasicRepository {
 
 impl BasicRepository {
     pub fn new() -> Self {
+        info!("Create BasicRepository");
         Self {
             replicas: Arc::new(Mutex::new(HashMap::new())),
         }
@@ -45,6 +46,7 @@ impl Repository for BasicRepository {
 
     async fn count_replicas(&self, chat_id: &str) -> usize {
         let storage = self.replicas.lock().unwrap();
-        storage.get(chat_id).iter().len()
+        info!("Storage: {storage:#?}");
+        storage.get(chat_id).map(|r| r.len()).unwrap_or(0)
     }
 }

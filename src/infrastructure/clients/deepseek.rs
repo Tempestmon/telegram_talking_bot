@@ -29,6 +29,7 @@ impl DeepSeekClient {
     }
 
     pub fn new() -> Self {
+        info!("Create DeepSeekClient");
         Self::new_with_params(
             &env::var("DS_TOKEN").expect("DS_TOKEN is not present"),
             &env::var("DS_SYSTEM_PROMPT").expect("DS_SYSTEM_PROMPT is not present"),
