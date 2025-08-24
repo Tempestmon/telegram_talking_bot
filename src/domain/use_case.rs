@@ -8,20 +8,20 @@ use crate::{
 
 pub struct ReplyUseCase<R: Repository> {
     deepseek_adapter: Arc<DeepSeekAdapter>,
-    repository: R,
+    repository: Arc<R>,
 }
 
 impl<R: Repository> ReplyUseCase<R> {
-    pub fn new(repository: R) -> Self {
+    pub fn new(deepseek_adapter: Arc<DeepSeekAdapter>, repository: Arc<R>) -> Self {
         ReplyUseCase {
-            deepseek_adapter: Arc::new(DeepSeekAdapter::new()),
+            deepseek_adapter,
             repository,
         }
     }
 
     // TODO: Make reply if no messages for a long time
     // TODO: Do not reply for every message. Make debouncing with timer
-    pub async fn execute(&mut self, message: Message) -> Option<String> {
+    pub async fn execute(&self, message: Message) -> Option<String> {
         _ = self.repository.save_replica(message.clone()).await;
 
         let chat_id = message.chat_id.as_str();
