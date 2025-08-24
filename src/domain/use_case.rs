@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use tracing::{debug, info};
+use tracing::info;
 
 use crate::{
     domain::models::Message,
@@ -24,9 +24,9 @@ impl<R: Repository> ReplyUseCase<R> {
     pub async fn execute(&mut self, message: Message) -> Option<String> {
         _ = self.repository.save_replica(message.clone()).await;
 
-        let mut previous_replicas = self.repository.get_replicas(20).await;
+        let chat_id = message.chat_id.as_str();
+        let previous_replicas = self.repository.get_replicas(chat_id).await;
         let mut ds_text = vec![];
-        let chat_id = message.chat_id;
         for replica in &previous_replicas {
             if replica.chat_id == chat_id {
                 let username = &replica.username;
@@ -34,22 +34,21 @@ impl<R: Repository> ReplyUseCase<R> {
                 ds_text.push(format!("{username}: {text}"));
             }
         }
-        previous_replicas.retain(|r| r.chat_id == chat_id);
 
-        let replicas_length = previous_replicas.len();
+        let replicas_length = self.repository.count_replicas(chat_id).await;
         info!("Got {replicas_length} replicas for chat {chat_id}");
-        debug!("{previous_replicas:#?}");
         if replicas_length >= 3 || message.is_bot_mentioned {
             self.repository
                 .flush_chat(chat_id)
                 .await
                 .expect("Cannot flush repository");
-            return Some(
-                self.deepseek_adapter
-                    .get_replica(ds_text)
-                    .await
-                    .expect("Error calling deepseek_adapter"),
-            );
+            let bot_replica = self
+                .deepseek_adapter
+                .get_replica(ds_text)
+                .await
+                .expect("Error calling deepseek_adapter");
+            // TODO: Save bot replica
+            return Some(bot_replica);
         }
         None
     }

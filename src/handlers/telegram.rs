@@ -27,13 +27,8 @@ pub async fn handle_message<R: Repository>(
             if text.contains(bot_name) {
                 is_bot_mentioned = true;
             }
-            let use_case_message = domain::models::Message::new(
-                username,
-                &text.to_string(),
-                &chat_id,
-                time,
-                is_bot_mentioned,
-            );
+            let use_case_message =
+                domain::models::Message::new(username, text, &chat_id, time, is_bot_mentioned);
 
             let mut use_case = use_case.lock().await;
 

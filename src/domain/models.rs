@@ -11,16 +11,16 @@ pub struct Message {
 
 impl Message {
     pub fn new(
-        username: &String,
-        text: &String,
-        chat_id: &String,
+        username: &str,
+        text: &str,
+        chat_id: &str,
         time: DateTime<Utc>,
         is_bot_mentioned: bool,
     ) -> Self {
         Self {
-            username: username.clone(),
-            text: text.clone(),
-            chat_id: chat_id.clone(),
+            username: username.to_owned(),
+            text: text.to_owned(),
+            chat_id: chat_id.to_owned(),
             time,
             is_bot_mentioned,
         }
