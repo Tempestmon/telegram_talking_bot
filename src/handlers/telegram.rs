@@ -17,7 +17,10 @@ pub async fn handle_message<R: Repository>(
     let chat_id = message.chat.id.to_string();
     let is_private = message.chat.is_private();
     let from = message.from.as_ref().unwrap();
-    let username = from.username.as_ref().unwrap();
+    let username = from
+        .username
+        .clone()
+        .unwrap_or_else(|| "Unknown".to_string());
     let mut is_bot_mentioned = false;
     let bot_name = &bot.get_me().await.unwrap().username.clone().unwrap();
     let text = message.text();
@@ -29,7 +32,7 @@ pub async fn handle_message<R: Repository>(
                 is_bot_mentioned = true;
             }
             let use_case_message = domain::models::Message::new(
-                username,
+                username.as_str(),
                 text,
                 &chat_id,
                 time,
