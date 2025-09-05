@@ -7,9 +7,9 @@ COPY ./src /app/src
 
 RUN rustup target add x86_64-unknown-linux-musl
 RUN cargo build --target x86_64-unknown-linux-musl --release
-
+RUN ls -la /app/target/x86_64-unknown-linux-musl/release/
 FROM scratch
 
-COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/mopsorez_bot /usr/local/bin/mopsorez_bot
+COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/mopsorez_telegram_bot /usr/local/bin/mopsorez_telegram_bot
 
-CMD ["mopsorez_bot"]
+CMD ["mopsorez_telegram_bot"]
