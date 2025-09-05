@@ -1,11 +1,9 @@
-FROM clux/muslrust:1.89.0-stable AS builder
+FROM blackdex/rust-musl:x86_64-musl-stable-1.89.0 AS builder
 
 WORKDIR /app
 
 COPY ./Cargo.toml /app/
 COPY ./src /app/src
-
-RUN apk update && apk add --no-cache openssl-dev pkgconf musl-dev
 
 RUN rustup target add x86_64-unknown-linux-musl
 RUN cargo build --target x86_64-unknown-linux-musl --release
