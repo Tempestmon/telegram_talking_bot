@@ -5,8 +5,9 @@ WORKDIR /app
 COPY ./Cargo.toml /app/
 COPY ./src /app/src
 
-RUN rustup target add x86_64-unknown-linux-musl
+RUN apk update && apk add --no-cache openssl-dev pkgconf musl-dev
 
+RUN rustup target add x86_64-unknown-linux-musl
 RUN cargo build --target x86_64-unknown-linux-musl --release
 
 FROM scratch
