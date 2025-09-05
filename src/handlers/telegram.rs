@@ -31,6 +31,7 @@ pub async fn handle_message<R: Repository>(
                 domain::models::Message::new(username, text, &chat_id, time, is_bot_mentioned);
 
             if let Some(response) = use_case.execute(use_case_message).await {
+                info!("Got response from AI: {response}");
                 bot.send_message(chat_id, response).await?;
             }
         }
