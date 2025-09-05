@@ -1,8 +1,8 @@
 TENANT = tempestmon
-VERSION = 0.0.1
+VERSION = v0.0.1
 
 build:
-	docker build -t $(TENANT)/mopsorez_telegram_bot:v$(VERSION) -f Dockerfile .
+	docker build -t $(TENANT)/mopsorez_telegram_bot:$(VERSION) -f Dockerfile .
 
 tag:
 	docker tag $(TENANT)/mopsorez_telegram_bot:$(VERSION) $(TENANT)/mopsorez_telegram_bot:latest
