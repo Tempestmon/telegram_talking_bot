@@ -7,6 +7,7 @@ pub struct Message {
     pub chat_id: String,
     pub time: DateTime<Utc>,
     pub is_bot_mentioned: bool,
+    pub is_private: bool,
 }
 
 impl Message {
@@ -16,6 +17,7 @@ impl Message {
         chat_id: &str,
         time: DateTime<Utc>,
         is_bot_mentioned: bool,
+        is_private: bool,
     ) -> Self {
         Self {
             username: username.to_owned(),
@@ -23,6 +25,7 @@ impl Message {
             chat_id: chat_id.to_owned(),
             time,
             is_bot_mentioned,
+            is_private,
         }
     }
 }

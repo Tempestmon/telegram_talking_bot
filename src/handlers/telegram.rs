@@ -15,6 +15,7 @@ pub async fn handle_message<R: Repository>(
 ) -> Result<(), teloxide::errors::RequestError> {
     info!("Got message to handle");
     let chat_id = message.chat.id.to_string();
+    let is_private = message.chat.is_private();
     let from = message.from.as_ref().unwrap();
     let username = from.username.as_ref().unwrap();
     let mut is_bot_mentioned = false;
@@ -27,8 +28,14 @@ pub async fn handle_message<R: Repository>(
             if text.contains(bot_name) {
                 is_bot_mentioned = true;
             }
-            let use_case_message =
-                domain::models::Message::new(username, text, &chat_id, time, is_bot_mentioned);
+            let use_case_message = domain::models::Message::new(
+                username,
+                text,
+                &chat_id,
+                time,
+                is_bot_mentioned,
+                is_private,
+            );
 
             if let Some(response) = use_case.execute(use_case_message).await {
                 info!("Got response from AI: {response}");

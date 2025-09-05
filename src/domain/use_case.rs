@@ -37,7 +37,7 @@ impl<R: Repository> ReplyUseCase<R> {
 
         let replicas_length = self.repository.count_replicas(chat_id).await;
         info!("Got {replicas_length} replicas for chat {chat_id}");
-        if replicas_length >= 3 || message.is_bot_mentioned {
+        if replicas_length >= 3 || message.is_bot_mentioned || message.is_private {
             self.repository
                 .flush_chat(chat_id)
                 .await
